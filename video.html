@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Surprize!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+            cursor: pointer;
+        }
+
+        .loading {
+            position: absolute;
+            color: white;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <div class="loading" id="loading">Загрузка видео...</div>
+        <video id="videoPlayer" autoplay playsinline>
+            <source src="video/surprize.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+        </video>
+    </div>
+    <script>
+        const video = document.getElementById('videoPlayer');
+        const loading = document.getElementById('loading');
+
+        // Устанавливаем максимальную громкость и убираем muted сразу
+        video.volume = 1.0;
+        video.muted = false;
+
+        // Обработчик успешной загрузки
+        video.addEventListener('loadeddata', () => {
+            console.log('Видео загружено');
+            loading.style.display = 'none';
+            video.muted = false;
+            video.volume = 1.0;
+            video.play().catch(e => {
+                console.log('Ошибка автозапуска:', e);
+                loading.textContent = 'Нажмите на видео для запуска';
+                loading.style.display = 'block';
+            });
+        });
+
+        // Обработчик когда видео готово к воспроизведению
+        video.addEventListener('canplay', () => {
+            console.log('Видео готово к воспроизведению');
+            video.muted = false;
+            video.volume = 1.0;
+        });
+
+        // Обработчик начала воспроизведения
+        video.addEventListener('play', () => {
+            console.log('Видео запущено');
+            loading.style.display = 'none';
+        });
+
+        // Обработчик ошибок загрузки
+        video.addEventListener('error', (e) => {
+            console.error('Ошибка загрузки видео:', e);
+            console.error('Код ошибки:', video.error ? video.error.code : 'неизвестно');
+            loading.textContent = 'Ошибка загрузки видео. Проверьте консоль (F12)';
+            loading.style.color = 'red';
+        });
+
+        // Обработчик прогресса загрузки
+        video.addEventListener('loadstart', () => {
+            console.log('Начало загрузки видео');
+            loading.textContent = 'Загрузка видео...';
+        });
+
+        video.addEventListener('progress', () => {
+            if (video.buffered.length > 0) {
+                const loaded = (video.buffered.end(0) / video.duration) * 100;
+                loading.textContent = `Загрузка видео... ${Math.round(loaded)}%`;
+            }
+        });
+
+        // Пытаемся запустить сразу с звуком
+        video.muted = false;
+        video.volume = 1.0;
+        
+        // Пробуем разные пути к видео
+        const videoPaths = [
+            'video/surprize.mp4',
+            './video/surprize.mp4',
+            '/video/surprize.mp4'
+        ];
+        
+        let currentPathIndex = 0;
+        
+        function tryLoadVideo() {
+            if (currentPathIndex < videoPaths.length) {
+                video.src = videoPaths[currentPathIndex];
+                console.log('Попытка загрузить видео:', videoPaths[currentPathIndex]);
+                video.load();
+                currentPathIndex++;
+            }
+        }
+        
+        video.addEventListener('error', () => {
+            if (currentPathIndex < videoPaths.length) {
+                console.log('Попытка загрузить с другого пути...');
+                setTimeout(tryLoadVideo, 500);
+            }
+        });
+        
+        // Первая попытка запуска
+        video.play().catch(e => {
+            console.log('Первая попытка автозапуска не удалась, ждем загрузки:', e);
+        });
+
+        // Клик по видео для запуска, если автозапуск не сработал
+        video.addEventListener('click', () => {
+            if (video.paused) {
+                video.muted = false;
+                video.volume = 1.0;
+                video.play();
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+

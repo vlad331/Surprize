@@ -1,0 +1,14 @@
+{
+  "name": "dino-game-rickroll",
+  "version": "1.0.0",
+  "description": "Dino game with Rickroll redirect",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -o -c-1",
+    "dev": "npx http-server . -p 3000 -o -c-1"
+  },
+  "keywords": ["game", "dino", "rickroll"],
+  "author": "",
+  "license": "MIT"
+}
+

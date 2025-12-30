@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Dino Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-info">
+            <h1>🦕 Dino Game</h1>
+            <p>Нажмите ПРОБЕЛ или стрелку ВВЕРХ, чтобы прыгнуть</p>
+            <div class="score">Счет: <span id="score">0</span></div>
+        </div>
+        <canvas id="gameCanvas" width="800" height="200"></canvas>
+        <div class="game-over" id="gameOver">
+            <h2>Игра окончена!</h2>
+            <p>Повезет в следующий раз</p>
+        </div>
+    </div>
+    <script src="game.js?v=9"></script>
+</body>
+</html>
+
