@@ -90,7 +90,8 @@ function updateObstacles() {
             obstacles.splice(index, 1);
             score += 10;
             scoreElement.textContent = score;
-            gameSpeed += 0.1;
+            // Скорость остается постоянной для всех платформ
+            // gameSpeed += 0.1; // Убрано для стабильной скорости
         }
         
         // Проверка столкновения
