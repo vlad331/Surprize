@@ -5,7 +5,7 @@ const gameOverElement = document.getElementById('gameOver');
 
 // Игровые переменные
 let score = 0;
-let gameSpeed = 5;
+let gameSpeed = 2; // Минимальная начальная скорость
 let gameRunning = true;
 let gravity = 0.6;
 
@@ -90,8 +90,8 @@ function updateObstacles() {
             obstacles.splice(index, 1);
             score += 10;
             scoreElement.textContent = score;
-            // Скорость остается постоянной для всех платформ
-            // gameSpeed += 0.1; // Убрано для стабильной скорости
+            // Постепенное увеличение скорости после каждого препятствия
+            gameSpeed += 0.03; // Небольшое увеличение для плавного ускорения
         }
         
         // Проверка столкновения
